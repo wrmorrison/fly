@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fly Jump!!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: url("swamp.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+    .fly-image {
+      position: absolute;
+      cursor: pointer;
+      visibility: hidden; /* Initially hide the images */
+    }
+  </style>
+</head>
+<body>
+  <!-- Add audio element for the sound effect -->
+  <audio id="popSound" src="pop.mp3"></audio>
+  
+  <script>
+    const bugs = [
+      { src: 'fly.png' }
+    ];
+
+    // Function to handle image loading and display
+    function showImage(image) {
+      image.style.visibility = 'visible';
+    }
+
+    // Create and add all bug images to the page
+    bugs.forEach((bug, index) => {
+      const image = new Image();
+      image.src = bug.src;
+      image.alt = `Bug ${index + 1}`;
+      image.classList.add('fly-image');
+
+      // Set initial random position within the visible area
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const imageWidth = image.clientWidth;
+      const imageHeight = image.clientHeight;
+      const bugOffset = 200; // Set the minimum distance from the edge (adjust as needed)
+      let randomX, randomY;
+
+      randomX = Math.floor(Math.random() * (viewportWidth - 2 * bugOffset - imageWidth)) + bugOffset;
+      randomY = Math.floor(Math.random() * (viewportHeight - 2 * bugOffset - imageHeight)) + bugOffset;
+
+      image.style.left = randomX + 'px';
+      image.style.top = randomY + 'px';
+
+      image.addEventListener('click', () => {
+        moveImage(image);
+        playPopSound(); // Play the sound effect on image click
+      });
+
+      image.addEventListener('load', () => showImage(image));
+      document.body.appendChild(image);
+    });
+
+    function moveImage(image) {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const imageWidth = image.clientWidth;
+      const imageHeight = image.clientHeight;
+      const bugOffset = 50; // Set the minimum distance from the edge (adjust as needed)
+      let randomX, randomY;
+
+      randomX = Math.floor(Math.random() * (viewportWidth - 2 * bugOffset - imageWidth)) + bugOffset;
+      randomY = Math.floor(Math.random() * (viewportHeight - 2 * bugOffset - imageHeight)) + bugOffset;
+
+      image.style.left = randomX + 'px';
+      image.style.top = randomY + 'px';
+    }
+
+    // Function to play the pop sound effect
+    function playPopSound() {
+      const popSound = document.getElementById('popSound');
+      popSound.currentTime = 0; // Reset the audio to the beginning
+      popSound.play();
+    }
+  </script>
+</body>
+</html>
